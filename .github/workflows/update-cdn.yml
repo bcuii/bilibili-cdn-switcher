@@ -1,0 +1,26 @@
+name: Update CDN list
+
+on:
+  schedule:
+    - cron: '0 0 * * 6,0'  # 每周六, 周日 UTC 00:00
+  workflow_dispatch:       # 允许在 Actions 页面手动运行
+
+permissions:
+  contents: write
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Check nodes and update lists
+        run: python3 tools/update_cdn.py
+
+      - name: Commit changes
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add cdn_list.json cdn_backup.json
+          git diff --cached --quiet || git commit -m "Update CDN list $(date -u +%F)"
+          git push

@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<style>
+  body { width: 340px; margin: 0; padding: 12px; font: 13px/1.5 system-ui, sans-serif; color: #222; }
+  h1 { font-size: 15px; margin: 0 0 8px; display: flex; justify-content: space-between; align-items: center; }
+  .row { display: flex; align-items: center; justify-content: space-between; margin: 8px 0; gap: 8px; }
+  select { flex: 1; min-width: 0; padding: 3px; }
+  button { padding: 4px 10px; cursor: pointer; }
+  button:disabled { cursor: default; opacity: .5; }
+  .muted { color: #888; font-size: 12px; }
+  #msg { min-height: 18px; color: #d9480f; font-size: 12px; }
+  #msg.info { color: #1971c2; }
+  table { width: 100%; border-collapse: collapse; font-size: 12px; }
+  th, td { text-align: left; padding: 2px 4px; border-bottom: 1px solid #eee; }
+  td.n { text-align: right; font-variant-numeric: tabular-nums; }
+  tr.cur td { font-weight: 600; color: #1971c2; }
+  tbody tr { cursor: pointer; }
+  tbody tr:hover { background: #f4f6f8; }
+  .results { max-height: 220px; overflow-y: auto; margin-top: 4px; }
+  .tabs { display: flex; gap: 4px; margin-top: 10px; }
+  .tab { flex: 1; padding: 3px 0; font-size: 12px; background: #f1f3f5; border: 1px solid #dee2e6; border-radius: 4px; }
+  .tab.on { background: #e7f5ff; border-color: #74c0fc; color: #1971c2; }
+  /* 开关 */
+  .sw { position: relative; width: 36px; height: 20px; flex: none; }
+  .sw input { display: none; }
+  .sw span { position: absolute; inset: 0; background: #ccc; border-radius: 10px; transition: .2s; cursor: pointer; }
+  .sw span::after { content: ''; position: absolute; width: 16px; height: 16px; left: 2px; top: 2px; background: #fff; border-radius: 50%; transition: .2s; }
+  .sw input:checked + span { background: #00a1d6; }
+  .sw input:checked + span::after { transform: translateX(16px); }
+</style>
+</head>
+<body>
+  <h1>B 站 CDN 切换 <label class="sw" title="启用"><input type="checkbox" id="enabled"><span></span></label></h1>
+
+  <div class="row"><span>节点</span><select id="node"></select></div>
+
+  <div class="row">
+    <button id="testList">测速(列表)</button>
+    <button id="testBackup">测试全部 backup</button>
+  </div>
+  <div id="msg"></div>
+
+  <div class="tabs">
+    <button class="tab on" data-view="results">测速结果</button>
+    <button class="tab" data-view="list">测速列表</button>
+    <button class="tab" data-view="backup">全部列表</button>
+  </div>
+  <div class="results">
+    <table>
+      <thead><tr><th>节点</th><th class="n" id="col2"></th><th class="n" id="col3"></th></tr></thead>
+      <tbody id="rows"></tbody>
+    </table>
+  </div>
+  <div class="muted" id="resultInfo"></div>
+
+  <div class="row"><span>视频卡顿时自动重新测速并切换</span><label class="sw"><input type="checkbox" id="auto"><span></span></label></div>
+  <div class="row"><span>显示当前 CDN 与网速</span><label class="sw"><input type="checkbox" id="overlay"><span></span></label></div>
+  <div class="row"><span class="muted">清除测速结果与本地设置</span><button id="clear">清除本地数据</button></div>
+
+  <script src="popup.js"></script>
+</body>
+</html>

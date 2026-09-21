@@ -1,0 +1,19 @@
+{
+  "manifest_version": 3,
+  "name": "Bilibili CDN Switcher",
+  "version": "0.1.0",
+  "description": "为 B 站普通视频测速并切换视频 CDN 节点.",
+  "permissions": ["storage", "declarativeNetRequest", "webRequest"],
+  "host_permissions": [
+    "https://*.bilibili.com/*",
+    "https://*.bilivideo.com/*",
+    "https://raw.githubusercontent.com/*"
+  ],
+  "background": { "service_worker": "background.js" },
+  "action": { "default_title": "B 站 CDN 切换", "default_popup": "popup.html" },
+  "content_scripts": [{
+    "matches": ["https://www.bilibili.com/video/*"],
+    "js": ["content.js"],
+    "run_at": "document_idle"
+  }]
+}
